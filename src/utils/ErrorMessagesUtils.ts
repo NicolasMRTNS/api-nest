@@ -1,0 +1,5 @@
+export const INVALID_CREDENTIALS = 'Invalid credentials.'
+export const USER_NOT_FOUND = 'User data not found.'
+export const ERROR_CREATE_USER = 'Error creating the user.'
+export const ERROR_LOGIN = 'Error logging in the user.'
+export const ERROR_RETRIEVING_DATA = 'Error retrieving user data.'

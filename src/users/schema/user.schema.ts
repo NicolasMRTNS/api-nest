@@ -12,6 +12,12 @@ export class User {
   password: string
 
   @Prop()
+  height: number
+
+  @Prop()
+  weight: number
+
+  @Prop()
   ftp: number
 }
 

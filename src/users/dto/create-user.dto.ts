@@ -3,7 +3,8 @@ import {
   IsEmail,
   IsNotEmpty,
   MaxLength,
-  MinLength
+  MinLength,
+  IsNumber
 } from 'class-validator'
 
 export class CreateUserDto {
@@ -16,4 +17,16 @@ export class CreateUserDto {
   @MinLength(8)
   @MaxLength(20)
   readonly password: string
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly height: number
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly weight: number
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly ftp: number
 }
