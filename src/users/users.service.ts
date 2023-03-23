@@ -18,8 +18,16 @@ export class UsersService {
 
   // GET
   async findAllUsers(): Promise<IUser[]> {
-    const userData = await this.userModel.find()
+    const userData: IUser[] = await this.userModel.find()
     if (!userData || userData.length === 0) {
+      throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND)
+    }
+    return userData
+  }
+
+  async findOneUser(id: string): Promise<IUser> {
+    const userData: IUser = await this.userModel.findById(id)
+    if (!userData) {
       throw new HttpException(USER_NOT_FOUND, HttpStatus.NOT_FOUND)
     }
     return userData
@@ -33,15 +41,18 @@ export class UsersService {
     } catch (exception) {
       throw new HttpException(ERROR_CREATE_USER, HttpStatus.BAD_REQUEST)
     }
-    const userWithHash = { ...createUserDto, password: hash }
-    const newUser = new this.userModel(userWithHash)
+    const userWithHash: CreateUserDto = { ...createUserDto, password: hash }
+    const newUser: IUser = new this.userModel(userWithHash)
     return await newUser.save()
   }
 
   async login(loginUserDto: LoginUserDto): Promise<IUser> {
     try {
-      const user = await this.userModel.findOne(loginUserDto)
-      const isMatch = await bcrypt.compare(loginUserDto.password, user.password)
+      const user: IUser = await this.userModel.findOne(loginUserDto)
+      const isMatch: boolean = await bcrypt.compare(
+        loginUserDto.password,
+        user.password
+      )
       if (!isMatch) {
         throw new HttpException(INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED)
       } else {

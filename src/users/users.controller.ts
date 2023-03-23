@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common'
+import { Controller, Get, Param, Post } from '@nestjs/common'
 import { HttpStatus } from '@nestjs/common/enums'
 import { HttpException } from '@nestjs/common/exceptions'
 import {
@@ -6,7 +6,7 @@ import {
   ERROR_LOGIN,
   ERROR_RETRIEVING_DATA
 } from 'src/utils/ErrorMessagesUtils'
-import { LOGIN_URL } from 'src/utils/UrlUtils'
+import { ID_URL, LOGIN_URL } from 'src/utils/UrlUtils'
 import { CreateUserDto } from './dto/create-user.dto'
 import { LoginUserDto } from './dto/login-user.dto'
 import { IUser } from './interfaces/user.interface'
@@ -20,6 +20,15 @@ export class UsersController {
   findAll(): Promise<IUser[]> {
     try {
       return this.usersService.findAllUsers()
+    } catch (exception) {
+      throw new HttpException(ERROR_RETRIEVING_DATA, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Get(ID_URL)
+  findOne(@Param('id') id: string): Promise<IUser> {
+    try {
+      return this.usersService.findOneUser(id)
     } catch (exception) {
       throw new HttpException(ERROR_RETRIEVING_DATA, HttpStatus.BAD_REQUEST)
     }
