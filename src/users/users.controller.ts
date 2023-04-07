@@ -1,8 +1,9 @@
-import { Controller, Get, Param, Post } from '@nestjs/common'
+import { Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { HttpStatus } from '@nestjs/common/enums'
 import { HttpException } from '@nestjs/common/exceptions'
 import {
   ERROR_CREATE_USER,
+  ERROR_DELETE_USER,
   ERROR_LOGIN,
   ERROR_RETRIEVING_DATA
 } from 'src/utils/ErrorMessagesUtils'
@@ -49,6 +50,16 @@ export class UsersController {
       return this.usersService.login(loginUserDto)
     } catch (exception) {
       throw new HttpException(ERROR_LOGIN, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Delete()
+  delete(@Param('id') id: string): string {
+    try {
+      this.usersService.delete(id)
+      return `User ${id} deleted`
+    } catch (exception) {
+      throw new HttpException(ERROR_DELETE_USER, HttpStatus.BAD_REQUEST)
     }
   }
 }

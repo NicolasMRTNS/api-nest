@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt'
 import { LoginUserDto } from './dto/login-user.dto'
 import {
   ERROR_CREATE_USER,
+  ERROR_DELETE_USER,
   INVALID_CREDENTIALS,
   USER_NOT_FOUND
 } from 'src/utils/ErrorMessagesUtils'
@@ -60,6 +61,19 @@ export class UsersService {
       }
     } catch (exception) {
       throw new HttpException(INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED)
+    }
+  }
+
+  // DELETE
+  async delete(id: string): Promise<void> {
+    try {
+      const user: IUser = await this.userModel.findById(id)
+      if (!user) {
+        throw new HttpException(ERROR_DELETE_USER, HttpStatus.BAD_REQUEST)
+      }
+      await this.userModel.deleteOne(user.id)
+    } catch (exception) {
+      throw new HttpException(ERROR_DELETE_USER, HttpStatus.BAD_REQUEST)
     }
   }
 }
